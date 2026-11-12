@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOCTURNE & ROAST — Precision Roasting. After Hours.</title>
+  
+  <!-- Editorial & Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#09090B',
+            charcoal: '#121215',
+            graphite: '#1A1A1F',
+            hairline: '#27272A',
+            alabaster: '#FAFAFA',
+            silver: '#A1A1AA',
+            champagne: '#E5C158',
+            gold: '#D4AF37',
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          animation: {
+            'steam': 'steamRise 4s ease-in-out infinite',
+            'fade-in': 'fadeIn 0.45s ease-out forwards',
+            'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            steamRise: {
+              '0%, 100%': { transform: 'translateY(0px) scale(1)', opacity: '0.35' },
+              '50%': { transform: 'translateY(-10px) scale(1.05)', opacity: '0.8' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Pure Dark Monochrome Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #09090B;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27272A;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #E5C158;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Subtle architectural dot grid in pure monochrome */
+    .bg-monochrome-grid {
+      background-image: radial-gradient(rgba(229, 193, 88, 0.06) 1px, transparent 0);
+      background-size: 28px 28px;
+    }
+
+    /* Champagne glow utility */
+    .champagne-glow:hover {
+      box-shadow: 0 0 28px rgba(229, 193, 88, 0.22);
+    }
+  </style>
+</head>
+<body class="bg-obsidian text-alabaster font-sans antialiased selection:bg-champagne selection:text-obsidian overflow-x-hidden">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- 1. STICKY GLASSMORPHIC NAVIGATION BAR -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 bg-obsidian/80 backdrop-blur-xl border-b border-hairline">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <!-- Brand Wordmark & Geometric Emblem -->
+      <a href="#" class="flex items-center gap-3.5 group shrink-0">
+        <div class="w-10 h-10 rounded-xl border border-champagne/40 flex items-center justify-center bg-charcoal group-hover:border-champagne transition-all duration-300">
+          <!-- Minimalist Geometric SVG Emblem -->
+          <svg class="w-5 h-5 text-champagne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polygon points="12 2 21 7 21 17 12 22 3 17 3 7 12 2" />
+            <circle cx="12" cy="12" r="3.5" />
+            <line x1="12" y1="2" x2="12" y2="8.5" />
+          </svg>
+        </div>
+        <div>
+          <span class="font-serif text-lg sm:text-2xl tracking-[0.16em] font-semibold text-alabaster block leading-none">NOCTURNE & ROAST</span>
+          <span class="text-[9px] sm:text-[10px] tracking-[0.32em] text-champagne uppercase block mt-1">Precision Coffee Sanctuary</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden lg:flex items-center gap-7 text-xs uppercase tracking-[0.18em] text-silver">
+        <a href="#menu" class="hover:text-champagne transition-colors py-2">Menu</a>
+        <a href="#craft" class="hover:text-champagne transition-colors py-2">Craft Lab</a>
+        <a href="#reserve" class="hover:text-champagne transition-colors py-2">Reserve</a>
+        <a href="#location" class="hover:text-champagne transition-colors py-2">Hours & Location</a>
+      </nav>
+
+      <!-- Header Right Controls -->
+      <div class="flex items-center gap-2.5 sm:gap-3.5">
+        <!-- Dynamic Live Open/Closing Status Pill -->
+        <div id="nav-status-pill" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-charcoal border border-hairline text-[11px] tracking-wider uppercase font-medium text-emerald-400">
+          <span id="nav-status-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="nav-status-text">OPEN NOW</span>
+        </div>
+
+        <!-- Cart Trigger Button -->
+        <button id="open-cart-btn" aria-label="Open Order Cart" class="relative px-3.5 sm:px-4 py-2 rounded-full bg-charcoal border border-hairline hover:border-champagne text-alabaster flex items-center gap-2 transition-all champagne-glow">
+          <i data-lucide="shopping-bag" class="w-4 h-4 text-champagne"></i>
+          <span class="hidden sm:inline text-xs font-medium tracking-widest uppercase">Order</span>
+          <span id="header-cart-badge" class="w-5 h-5 rounded-full bg-champagne text-obsidian text-[11px] font-bold flex items-center justify-center transition-transform">0</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="mobile-menu-btn" aria-label="Toggle Menu" class="lg:hidden p-2.5 rounded-full bg-charcoal border border-hairline text-alabaster hover:text-champagne hover:border-champagne transition-colors">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-nav" class="hidden lg:hidden bg-charcoal border-b border-hairline px-6 py-5 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-hairline">
+        <span class="text-[11px] uppercase tracking-widest text-silver">Roastery Status</span>
+        <span id="mobile-status-text" class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">OPEN NOW</span>
+      </div>
+      <a href="#menu" class="mobile-nav-link block text-sm uppercase tracking-widest text-alabaster hover:text-champagne">Menu</a>
+      <a href="#craft" class="mobile-nav-link block text-sm uppercase tracking-widest text-alabaster hover:text-champagne">Craft Lab</a>
+      <a href="#reserve" class="mobile-nav-link block text-sm uppercase tracking-widest text-alabaster hover:text-champagne">Reserve</a>
+      <a href="#location" class="mobile-nav-link block text-sm uppercase tracking-widest text-alabaster hover:text-champagne">Hours & Location</a>
+    </div>
+  </header>
+
+  <!-- 2. EDITORIAL HERO SECTION (Pure Dark Monochrome & Champagne Gold) -->
+  <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-obsidian">
+    <!-- Pure Monochrome Radial Champagne Lighting & Architectural SVG Frame -->
+    <div class="absolute inset-0 pointer-events-none">
+      <!-- Ambient Champagne Radial Glow -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[680px] h-[680px] rounded-full bg-[radial-gradient(circle,rgba(229,193,88,0.11)_0%,rgba(9,9,11,0)_70%)] animate-pulse-slow"></div>
+      
+      <!-- Geometric Architectural Line Art Overlay -->
+      <svg class="w-full h-full opacity-20" viewBox="0 0 1440 900" fill="none" preserveAspectRatio="xMidYMid slice">
+        <circle cx="720" cy="450" r="340" stroke="#27272A" stroke-width="1" />
+        <circle cx="720" cy="450" r="460" stroke="#27272A" stroke-width="1" stroke-dasharray="4 8" />
+        <line x1="720" y1="0" x2="720" y2="900" stroke="#27272A" stroke-width="1" />
+        <line x1="0" y1="450" x2="1440" y2="450" stroke="#27272A" stroke-width="1" />
+        <polygon points="720,110 1060,450 720,790 380,450" stroke="#E5C158" stroke-opacity="0.25" stroke-width="1" />
+      </svg>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
+      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-charcoal border border-hairline mb-8">
+        <span class="w-1.5 h-1.5 rounded-full bg-champagne"></span>
+        <span class="text-[11px] uppercase tracking-[0.28em] text-champagne font-medium">Small-Batch Nocturnal Roastery</span>
+      </div>
+
+      <h1 class="font-serif text-5xl sm:text-7xl lg:text-[5.5rem] font-medium tracking-tight text-alabaster leading-[1.03] mb-6">
+        Precision Roasting.
+        <span class="block italic font-normal text-champagne mt-2">
+          After Hours.
+        </span>
+      </h1>
+
+      <p class="max-w-2xl mx-auto text-silver text-base sm:text-lg font-light leading-relaxed mb-10">
+        Micro-lot single origins roasted under moonlight, extracted with laboratory precision, and served in an obsidian sanctuary built for quiet focus and nocturnal ritual.
+      </p>
+
+      <!-- Dual CTA Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#menu" class="w-full sm:w-auto px-8 py-4 rounded-full bg-champagne text-obsidian font-semibold text-xs uppercase tracking-[0.22em] hover:bg-alabaster transition-all duration-300 champagne-glow flex items-center justify-center gap-2.5">
+          <span>Explore Menu</span>
+          <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+        </a>
+        <a href="#reserve" class="w-full sm:w-auto px-8 py-4 rounded-full bg-charcoal text-alabaster border border-hairline hover:border-champagne font-medium text-xs uppercase tracking-[0.22em] transition-all duration-300 flex items-center justify-center gap-2.5">
+          <span>Reserve a Table</span>
+          <i data-lucide="calendar" class="w-4 h-4 text-champagne"></i>
+        </a>
+      </div>
+
+      <!-- Precision Roasting Metrics Strip -->
+      <div class="grid grid-cols-3 gap-4 max-w-xl mx-auto mt-16 pt-8 border-t border-hairline text-center">
+        <div>
+          <p class="font-serif text-2xl sm:text-3xl text-champagne">93.4°C</p>
+          <p class="text-[10px] uppercase tracking-[0.22em] text-silver mt-1">Thermal Stability</p>
+        </div>
+        <div>
+          <p class="font-serif text-2xl sm:text-3xl text-alabaster">01:00 AM</p>
+          <p class="text-[10px] uppercase tracking-[0.22em] text-silver mt-1">Late-Night Service</p>
+        </div>
+        <div>
+          <p class="font-serif text-2xl sm:text-3xl text-champagne">92+ PTS</p>
+          <p class="text-[10px] uppercase tracking-[0.22em] text-silver mt-1">Cupping Score Lots</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. FILTERABLE & SEARCHABLE MENU -->
+  <section id="menu" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-hairline">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div>
+        <span class="text-xs uppercase tracking-[0.28em] text-champagne block mb-2">Curated Offerings</span>
+        <h2 class="font-serif text-4xl sm:text-5xl text-alabaster font-medium">The Nocturne Menu</h2>
+      </div>
+      
+      <!-- Real-Time Search Bar -->
+      <div class="relative w-full md:w-80">
+        <i data-lucide="search" class="w-4 h-4 text-silver absolute left-4 top-1/2 -translate-y-1/2"></i>
+        <input 
+          type="text" 
+          id="menu-search" 
+          placeholder="Search origin, tasting notes, pastry..." 
+          class="w-full pl-11 pr-10 py-3 rounded-full bg-charcoal border border-hairline text-sm text-alabaster placeholder:text-silver/50 focus:outline-none focus:border-champagne transition-colors"
+        />
+        <button id="clear-search-btn" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-silver hover:text-alabaster">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Category Tabs & Dietary/Style Tag Filters -->
+    <div class="space-y-4 mb-10">
+      <div id="category-tabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
+        <button data-category="All" class="category-tab active px-5 py-2.5 rounded-full text-xs uppercase tracking-widest font-semibold transition-all whitespace-nowrap bg-champagne text-obsidian">
+          All
+        </button>
+        <button data-category="Signature Espresso" class="category-tab px-5 py-2.5 rounded-full text-xs uppercase tracking-widest font-medium transition-all whitespace-nowrap bg-charcoal text-silver border border-hairline hover:border-champagne/60">
+          Signature Espresso
+        </button>
+        <button data-category="Pour-Over & Filter" class="category-tab px-5 py-2.5 rounded-full text-xs uppercase tracking-widest font-medium transition-all whitespace-nowrap bg-charcoal text-silver border border-hairline hover:border-champagne/60">
+          Pour-Over & Filter
+        </button>
+        <button data-category="Cold Brew & Tonic" class="category-tab px-5 py-2.5 rounded-full text-xs uppercase tracking-widest font-medium transition-all whitespace-nowrap bg-charcoal text-silver border border-hairline hover:border-champagne/60">
+          Cold Brew & Tonic
+        </button>
+        <button data-category="Artisanal Pastry" class="category-tab px-5 py-2.5 rounded-full text-xs uppercase tracking-widest font-medium transition-all whitespace-nowrap bg-charcoal text-silver border border-hairline hover:border-champagne/60">
+          Artisanal Pastry
+        </button>
+      </div>
+
+      <!-- Dietary / Style Pills -->
+      <div id="tag-filters" class="flex items-center gap-2 flex-wrap">
+        <span class="text-xs text-silver/70 uppercase tracking-wider mr-1">Filter:</span>
+        <button data-tag="All" class="tag-pill active px-3.5 py-1.5 rounded-lg text-xs font-medium bg-graphite text-champagne border border-champagne/50 transition-all">
+          All
+        </button>
+        <button data-tag="House Signature" class="tag-pill px-3.5 py-1.5 rounded-lg text-xs font-medium bg-charcoal text-silver border border-hairline hover:border-champagne/40 transition-all">
+          ★ House Signature
+        </button>
+        <button data-tag="Vegan" class="tag-pill px-3.5 py-1.5 rounded-lg text-xs font-medium bg-charcoal text-silver border border-hairline hover:border-champagne/40 transition-all">
+          Vegan
+        </button>
+        <button data-tag="Iced" class="tag-pill px-3.5 py-1.5 rounded-lg text-xs font-medium bg-charcoal text-silver border border-hairline hover:border-champagne/40 transition-all">
+          Iced
+        </button>
+      </div>
+    </div>
+
+    <!-- Menu Cards Grid -->
+    <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Populated dynamically via JS -->
+    </div>
+
+    <!-- Empty Filter State -->
+    <div id="menu-empty-state" class="hidden text-center py-16 bg-charcoal rounded-3xl border border-hairline">
+      <i data-lucide="coffee" class="w-10 h-10 text-champagne/70 mx-auto mb-3"></i>
+      <h3 class="font-serif text-2xl text-alabaster mb-1">No matching offerings found</h3>
+      <p class="text-sm text-silver mb-5">Adjust your filter selection or clear your search term.</p>
+      <button id="reset-filters-btn" class="px-6 py-2.5 rounded-full border border-champagne text-champagne text-xs uppercase tracking-widest hover:bg-champagne hover:text-obsidian transition-colors">
+        Reset All Filters
+      </button>
+    </div>
+  </section>
+
+  <!-- 4. INTERACTIVE CUSTOM BREW BUILDER ('THE CRAFT LAB') -->
+  <section id="craft" class="py-24 bg-charcoal border-y border-hairline bg-monochrome-grid">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-xs uppercase tracking-[0.28em] text-champagne block mb-2">Bespoke Extraction Studio</span>
+        <h2 class="font-serif text-4xl sm:text-5xl text-alabaster font-medium mb-4">The Craft Lab</h2>
+        <p class="text-silver text-sm sm:text-base font-light">
+          Architect your signature cup. Select your extraction base, milk texture, roast profile, and botanical infusion to preview live sensory metrics and glass layering.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Builder Controls (7 Cols) -->
+        <div class="lg:col-span-7 bg-obsidian border border-hairline rounded-3xl p-6 sm:p-8 space-y-8 shadow-2xl">
+          
+          <!-- 01. Drink Base -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <label class="text-xs uppercase tracking-[0.2em] text-champagne font-semibold">01. Drink Base</label>
+              <span class="text-xs text-silver">Precision Extraction</span>
+            </div>
+            <div id="builder-base-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- JS rendered -->
+            </div>
+          </div>
+
+          <!-- 02. Milk / Texture -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <label class="text-xs uppercase tracking-[0.2em] text-champagne font-semibold">02. Milk / Texture</label>
+              <span class="text-xs text-silver">Microfoam or Neat</span>
+            </div>
+            <div id="builder-milk-options" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <!-- JS rendered -->
+            </div>
+          </div>
+
+          <!-- 03. Roast / Extraction Profile -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <label class="text-xs uppercase tracking-[0.2em] text-champagne font-semibold">03. Roast / Extraction Profile</label>
+              <span class="text-xs text-silver">Curve Calibration</span>
+            </div>
+            <div id="builder-roast-options" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <!-- JS rendered -->
+            </div>
+          </div>
+
+          <!-- 04. Botanical Infusion -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <label class="text-xs uppercase tracking-[0.2em] text-champagne font-semibold">04. Botanical Infusion</label>
+              <span class="text-xs text-silver">House Distillates</span>
+            </div>
+            <div id="builder-infusion-options" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <!-- JS rendered -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Cup Visualizer & Sensory Telemetry (5 Cols) -->
+        <div class="lg:col-span-5 lg:sticky lg:top-28">
+          <div class="bg-gradient-to-b from-graphite to-obsidian border border-champagne/35 rounded-3xl p-6 sm:p-8 shadow-2xl">
+            <div class="flex items-start justify-between gap-3 border-b border-hairline pb-4 mb-6">
+              <div>
+                <span class="text-[10px] uppercase tracking-[0.25em] text-champagne block">Live Formulation</span>
+                <h3 id="preview-drink-title" class="font-serif text-2xl sm:text-3xl text-alabaster mt-0.5">Oat Silk Double Ristretto</h3>
+              </div>
+              <span id="preview-drink-price" class="font-serif text-3xl text-champagne font-semibold">$6.00</span>
+            </div>
+
+            <!-- Monochrome & Champagne Layered Glass Visualization (NO BROWN) -->
+            <div class="relative h-52 rounded-2xl bg-obsidian border border-hairline mb-6 flex flex-col items-center justify-center overflow-hidden p-4">
+              <!-- Ambient Steam / Chilled Mist SVG -->
+              <div id="cup-ambient-effect" class="flex gap-2.5 mb-2.5 animate-steam">
+                <span class="w-1 h-5 rounded-full bg-alabaster/25"></span>
+                <span class="w-1 h-7 rounded-full bg-champagne/50"></span>
+                <span class="w-1 h-5 rounded-full bg-alabaster/25"></span>
+              </div>
+              
+              <!-- Architectural Borosilicate Glass Vessel -->
+              <div class="w-24 h-28 rounded-b-2xl rounded-t-sm border-2 border-champagne/70 overflow-hidden flex flex-col justify-end relative bg-charcoal shadow-inner">
+                <!-- Milk / Microfoam Top Layer -->
+                <div id="cup-layer-milk" class="w-full transition-all duration-500 bg-[#F4F4F5]" style="height: 44%;"></div>
+                <!-- Botanical Infusion Layer -->
+                <div id="cup-layer-infusion" class="w-full transition-all duration-500 bg-[#E5C158]/75" style="height: 12%;"></div>
+                <!-- Extraction Base Layer (Cool Obsidian / Emerald / Slate tones) -->
+                <div id="cup-layer-base" class="w-full transition-all duration-500 bg-[#18181B]" style="height: 44%;"></div>
+                <!-- Glass Specular Highlight -->
+                <div class="absolute inset-y-0 left-1.5 w-1 bg-white/10 pointer-events-none"></div>
+              </div>
+
+              <span id="preview-vessel-caption" class="text-[10px] text-silver tracking-[0.2em] uppercase mt-3">
+                8oz Smoked Borosilicate Glass
+              </span>
+            </div>
+
+            <!-- Flavor Profile Tags & Telemetry -->
+            <div class="space-y-4 mb-6">
+              <div>
+                <span class="text-[10px] uppercase tracking-widest text-silver block mb-2">Flavor Profile Tags</span>
+                <div id="preview-flavor-tags" class="flex flex-wrap gap-1.5">
+                  <!-- Populated via JS -->
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3 pt-1">
+                <div class="bg-obsidian border border-hairline rounded-xl p-3">
+                  <span class="text-[10px] uppercase tracking-wider text-silver block">Caffeine Load</span>
+                  <span id="preview-caffeine" class="text-base font-semibold text-alabaster mt-0.5 block">155 mg</span>
+                </div>
+                <div class="bg-obsidian border border-hairline rounded-xl p-3">
+                  <span class="text-[10px] uppercase tracking-wider text-silver block">Energy</span>
+                  <span id="preview-calories" class="text-base font-semibold text-alabaster mt-0.5 block">130 kcal</span>
+                </div>
+              </div>
+            </div>
+
+            <button id="add-custom-brew-btn" class="w-full py-4 rounded-full bg-champagne text-obsidian font-semibold text-xs uppercase tracking-[0.2em] hover:bg-alabaster transition-all duration-300 champagne-glow flex items-center justify-center gap-2">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span>Add Custom Creation to Order</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. INTERACTIVE TABLE RESERVATION SYSTEM -->
+  <section id="reserve" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <!-- Left Editorial Context -->
+      <div class="lg:col-span-5 space-y-6">
+        <span class="text-xs uppercase tracking-[0.28em] text-champagne block">Sanctuary Seating</span>
+        <h2 class="font-serif text-4xl sm:text-5xl text-alabaster font-medium leading-tight">
+          Reserve Your Nocturnal Table
+        </h2>
+        <p class="text-silver text-sm sm:text-base font-light leading-relaxed">
+          From late-night creative sessions in the Obsidian Lounge to private omakase coffee flights at our Tasting Counter, reserve your preferred space in advance.
+        </p>
+
+        <div class="space-y-4 pt-2">
+          <div class="flex items-start gap-3.5">
+            <div class="p-2.5 rounded-xl bg-charcoal border border-hairline text-champagne mt-0.5">
+              <i data-lucide="moon" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-alabaster">Main Obsidian Lounge</h4>
+              <p class="text-xs text-silver mt-0.5">Low-glare architectural booths with brushed steel tables & vinyl acoustics.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3.5">
+            <div class="p-2.5 rounded-xl bg-charcoal border border-hairline text-champagne mt-0.5">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-alabaster">Private Tasting Counter</h4>
+              <p class="text-xs text-silver mt-0.5">4-seat chef's counter dedicated to rare Geisha pour-over flights.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3.5">
+            <div class="p-2.5 rounded-xl bg-charcoal border border-hairline text-champagne mt-0.5">
+              <i data-lucide="wind" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-alabaster">Courtyard Terrace</h4>
+              <p class="text-xs text-silver mt-0.5">Open-sky basalt stone terrace with radiant infrared warmth.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Interactive Booking Widget -->
+      <div class="lg:col-span-7">
+        <div id="reservation-form-card" class="bg-charcoal border border-hairline rounded-3xl p-6 sm:p-8 shadow-2xl">
+          <form id="reservation-form" class="space-y-6">
+            <!-- Date & Party Size -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="res-date" class="block text-xs uppercase tracking-wider text-silver mb-2">Select Date</label>
+                <input 
+                  type="date" 
+                  id="res-date" 
+                  required
+                  class="w-full px-4 py-3 rounded-xl bg-obsidian border border-hairline text-sm text-alabaster focus:outline-none focus:border-champagne [color-scheme:dark]"
+                />
+              </div>
+
+              <div>
+                <label class="block text-xs uppercase tracking-wider text-silver mb-2">Party Size (1–8 Guests)</label>
+                <div class="flex items-center justify-between px-4 py-2 rounded-xl bg-obsidian border border-hairline">
+                  <button type="button" id="party-minus" class="w-8 h-8 rounded-lg bg-charcoal hover:bg-champagne hover:text-obsidian text-alabaster flex items-center justify-center transition-colors">
+                    <i data-lucide="minus" class="w-4 h-4"></i>
+                  </button>
+                  <span id="party-size-display" class="text-sm font-semibold text-alabaster">2 Guests</span>
+                  <button type="button" id="party-plus" class="w-8 h-8 rounded-lg bg-charcoal hover:bg-champagne hover:text-obsidian text-alabaster flex items-center justify-center transition-colors">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Seating Zone Selector (4 Zones) -->
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-silver mb-2">Seating Zone</label>
+              <div id="zone-options" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <button type="button" data-zone="Main Obsidian Lounge" class="zone-btn active p-3.5 rounded-xl border border-champagne bg-champagne/10 text-left transition-all">
+                  <span class="block text-xs font-semibold text-champagne">Main Obsidian Lounge</span>
+                  <span class="block text-[11px] text-silver mt-0.5">Architectural Booths & Power</span>
+                </button>
+                <button type="button" data-zone="Window Bar" class="zone-btn p-3.5 rounded-xl border border-hairline bg-obsidian text-left hover:border-champagne/50 transition-all">
+                  <span class="block text-xs font-semibold text-alabaster">Window Bar</span>
+                  <span class="block text-[11px] text-silver mt-0.5">Streetscape & Solo Focus</span>
+                </button>
+                <button type="button" data-zone="Private Tasting Counter" class="zone-btn p-3.5 rounded-xl border border-hairline bg-obsidian text-left hover:border-champagne/50 transition-all">
+                  <span class="block text-xs font-semibold text-alabaster">Private Tasting Counter</span>
+                  <span class="block text-[11px] text-silver mt-0.5">Barista Brew Bar Experience</span>
+                </button>
+                <button type="button" data-zone="Courtyard Terrace" class="zone-btn p-3.5 rounded-xl border border-hairline bg-obsidian text-left hover:border-champagne/50 transition-all">
+                  <span class="block text-xs font-semibold text-alabaster">Courtyard Terrace</span>
+                  <span class="block text-[11px] text-silver mt-0.5">Heated Open-Air Sanctuary</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Live Time-Slot Chips -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-xs uppercase tracking-wider text-silver">Time Slot</label>
+                <div class="flex items-center gap-3 text-[11px]">
+                  <span class="flex items-center gap-1 text-emerald-400"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>Available</span>
+                  <span class="flex items-center gap-1 text-champagne"><span class="w-1.5 h-1.5 rounded-full bg-champagne"></span>Limited</span>
+                  <span class="flex items-center gap-1 text-zinc-500"><span class="w-1.5 h-1.5 rounded-full bg-zinc-500"></span>Full</span>
+                </div>
+              </div>
+              <div id="time-slots-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <!-- Populated dynamically via JS -->
+              </div>
+            </div>
+
+            <!-- Guest Details -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="res-name" class="block text-xs uppercase tracking-wider text-silver mb-2">Full Name</label>
+                <input 
+                  type="text" 
+                  id="res-name" 
+                  required
+                  placeholder="e.g., Julian Vance" 
+                  class="w-full px-4 py-3 rounded-xl bg-obsidian border border-hairline text-sm text-alabaster placeholder:text-silver/40 focus:outline-none focus:border-champagne"
+                />
+              </div>
+              <div>
+                <label for="res-contact" class="block text-xs uppercase tracking-wider text-silver mb-2">Email or Mobile</label>
+                <input 
+                  type="text" 
+                  id="res-contact" 
+                  required
+                  placeholder="julian@domain.com" 
+                  class="w-full px-4 py-3 rounded-xl bg-obsidian border border-hairline text-sm text-alabaster placeholder:text-silver/40 focus:outline-none focus:border-champagne"
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="w-full py-4 rounded-full bg-champagne text-obsidian font-semibold text-xs uppercase tracking-[0.2em] hover:bg-alabaster transition-all duration-300 champagne-glow">
+              Confirm Sanctuary Reservation
+            </button>
+          </form>
+        </div>
+
+        <!-- Instant Booking Confirmation Card -->
+        <div id="reservation-confirmation-card" class="hidden bg-gradient-to-br from-graphite to-obsidian border border-champagne/50 rounded-3xl p-8 text-center shadow-2xl animate-fade-in">
+          <div class="w-14 h-14 rounded-full bg-champagne/15 border border-champagne text-champagne flex items-center justify-center mx-auto mb-5">
+            <i data-lucide="check" class="w-7 h-7"></i>
+          </div>
+          <span class="text-xs uppercase tracking-[0.25em] text-champagne block mb-1">Reservation Confirmed</span>
+          <h3 class="font-serif text-3xl sm:text-4xl text-alabaster mb-2">Your Table Awaits</h3>
+          <p id="conf-guest-greeting" class="text-sm text-silver mb-6">Your seat has been reserved.</p>
+
+          <div class="bg-obsidian border border-hairline rounded-2xl p-5 max-w-md mx-auto mb-6 text-left space-y-3">
+            <div class="flex justify-between items-center border-b border-hairline pb-2.5">
+              <span class="text-xs text-silver uppercase tracking-wider">Reservation Code</span>
+              <span id="conf-code" class="font-mono text-sm font-bold text-champagne tracking-widest">NR-8492</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-silver">Date & Time</span>
+              <span id="conf-datetime" class="text-alabaster font-medium">—</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-silver">Party & Zone</span>
+              <span id="conf-zone-party" class="text-alabaster font-medium">—</span>
+            </div>
+          </div>
+
+          <button id="new-reservation-btn" class="px-6 py-3 rounded-full border border-champagne/50 text-champagne text-xs uppercase tracking-widest hover:bg-champagne hover:text-obsidian transition-all">
+            Modify or Book Another Table
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. HOURS, LOCATION & ATMOSPHERIC FOOTER -->
+  <section id="location" class="py-24 bg-charcoal border-t border-hairline">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        
+        <!-- Interactive Weekly Schedule (Highlights Current Day) -->
+        <div class="lg:col-span-6 bg-obsidian border border-hairline rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-5 border-b border-hairline mb-5">
+              <div>
+                <span class="text-xs uppercase tracking-[0.25em] text-champagne block">Roastery Hours</span>
+                <h3 class="font-serif text-3xl text-alabaster mt-1">Weekly Schedule</h3>
+              </div>
+              <span id="schedule-badge" class="px-3.5 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-[11px] uppercase tracking-wider font-semibold">
+                OPEN NOW
+              </span>
+            </div>
+
+            <ul id="weekly-schedule-list" class="space-y-2.5 text-sm">
+              <!-- Populated dynamically via JS highlighting today -->
+            </ul>
+          </div>
+
+          <div class="mt-8 pt-5 border-t border-hairline flex flex-wrap items-center justify-between gap-2 text-xs text-silver">
+            <span>Last Espresso Pull: 30 mins prior to close</span>
+            <span class="text-champagne">Nocturnal Walk-Ins Welcome</span>
+          </div>
+        </div>
+
+        <!-- Location, Transit & VIP Tasting List Signup -->
+        <div class="lg:col-span-6 bg-obsidian border border-hairline rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-8">
+          <div>
+            <span class="text-xs uppercase tracking-[0.25em] text-champagne block">Flagship Sanctuary</span>
+            <h3 class="font-serif text-3xl text-alabaster mt-1 mb-6">Location & Transit</h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pb-6 border-b border-hairline">
+              <div>
+                <span class="text-[11px] uppercase tracking-wider text-silver block mb-1.5">Street Address</span>
+                <p class="text-sm text-alabaster leading-relaxed">
+                  718 Crosby Street, Ground Floor<br/>
+                  SoHo Design Quarter, NY 10012
+                </p>
+                <button id="copy-address-btn" class="mt-3 inline-flex items-center gap-1.5 text-xs text-champagne hover:text-alabaster transition-colors">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  <span>Copy Address</span>
+                </button>
+              </div>
+
+              <div>
+                <span class="text-[11px] uppercase tracking-wider text-silver block mb-1.5">Transit & Access</span>
+                <ul class="text-xs text-silver space-y-1.5 leading-relaxed">
+                  <li><strong class="text-alabaster">Subway:</strong> Prince St (R/W) • 2 min walk</li>
+                  <li><strong class="text-alabaster">Subway:</strong> Broadway-Lafayette (B/D/F/M)</li>
+                  <li><strong class="text-alabaster">Amenities:</strong> 1Gbps Fiber • USB-C at every seat</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- VIP Tasting List Signup -->
+            <div class="pt-6">
+              <span class="text-xs uppercase tracking-[0.2em] text-champagne block mb-1">Private Micro-Lot Releases</span>
+              <h4 class="font-serif text-2xl text-alabaster mb-2">Join the Nocturne Tasting List</h4>
+              <p class="text-xs text-silver mb-4">Receive priority invitations to after-hours cupping sessions and limited-release nano-lot beans.</p>
+
+              <form id="vip-newsletter-form" class="flex flex-col sm:flex-row gap-2.5">
+                <input 
+                  type="email" 
+                  id="vip-email-input" 
+                  required 
+                  placeholder="Enter your email address..." 
+                  class="flex-1 px-4 py-3 rounded-full bg-charcoal border border-hairline text-xs text-alabaster placeholder:text-silver/50 focus:outline-none focus:border-champagne"
+                />
+                <button type="submit" class="px-6 py-3 rounded-full bg-champagne text-obsidian font-semibold text-xs uppercase tracking-widest hover:bg-alabaster transition-colors shrink-0">
+                  Request Invite
+                </button>
+              </form>
+              <p id="vip-feedback" class="hidden text-xs text-emerald-400 mt-2.5 flex items-center gap-1.5">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                <span>You are on the Nocturne & Roast private tasting list.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Minimal Dark Monochrome Footer -->
+  <footer class="bg-obsidian border-t border-hairline py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="text-center sm:text-left">
+        <span class="font-serif text-xl tracking-[0.18em] text-alabaster font-semibold">NOCTURNE & ROAST</span>
+        <p class="text-xs text-silver mt-1">Precision Roasting. After Hours. © <span id="footer-year"></span></p>
+      </div>
+
+      <div class="flex items-center gap-6 text-xs text-silver uppercase tracking-widest">
+        <a href="#menu" class="hover:text-champagne transition-colors">Menu</a>
+        <a href="#craft" class="hover:text-champagne transition-colors">Craft Lab</a>
+        <a href="#reserve" class="hover:text-champagne transition-colors">Reserve</a>
+        <a href="#location" class="hover:text-champagne transition-colors">Location</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SLIDE-OUT EXPRESS ORDER CART DRAWER -->
+  <div id="cart-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300"></div>
+  
+  <aside id="cart-drawer" aria-label="Order Cart Drawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-charcoal border-l border-hairline z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <!-- Drawer Header -->
+    <div class="p-6 border-b border-hairline flex items-center justify-between bg-obsidian">
+      <div>
+        <span class="text-[10px] uppercase tracking-[0.25em] text-champagne block">Express Bar Pickup</span>
+        <h3 class="font-serif text-2xl text-alabaster">Your Order</h3>
+      </div>
+      <button id="close-cart-btn" aria-label="Close Cart" class="p-2 rounded-full bg-charcoal border border-hairline text-silver hover:text-alabaster hover:border-champagne transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Drawer Content -->
+    <div class="flex-1 overflow-y-auto p-6 space-y-4">
+      <!-- Empty Cart View -->
+      <div id="cart-empty-view" class="h-full flex flex-col items-center justify-center text-center py-12">
+        <div class="w-14 h-14 rounded-full bg-obsidian border border-hairline flex items-center justify-center mb-4">
+          <i data-lucide="shopping-bag" class="w-6 h-6 text-champagne/70"></i>
+        </div>
+        <h4 class="font-serif text-2xl text-alabaster mb-1">Your order tray is empty</h4>
+        <p class="text-xs text-silver max-w-xs mb-6">Select single-origin pours, pastries, or build a custom extraction in The Craft Lab.</p>
+        <button id="browse-menu-from-cart" class="px-6 py-2.5 rounded-full border border-champagne text-champagne text-xs uppercase tracking-widest hover:bg-champagne hover:text-obsidian transition-colors">
+          Explore Menu
+        </button>
+      </div>
+
+      <!-- Active Cart Items -->
+      <div id="cart-items-list" class="space-y-4 hidden"></div>
+
+      <!-- Order Confirmation Receipt Modal View -->
+      <div id="order-receipt-view" class="hidden bg-obsidian border border-champagne/50 rounded-2xl p-6 text-center space-y-4 animate-fade-in">
+        <div class="w-12 h-12 rounded-full bg-champagne/15 border border-champagne text-champagne flex items-center justify-center mx-auto">
+          <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-[10px] uppercase tracking-[0.25em] text-champagne">Sent to Extraction Bar</span>
+          <h4 class="font-serif text-3xl text-alabaster mt-1">Order Confirmed</h4>
+        </div>
+        <div class="bg-charcoal rounded-xl p-4 text-left space-y-2 border border-hairline text-xs">
+          <div class="flex justify-between">
+            <span class="text-silver">Order Reference:</span>
+            <span id="receipt-order-num" class="font-mono font-bold text-champagne">#NR-409</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-silver">Pickup Window:</span>
+            <span id="receipt-pickup-time" class="text-alabaster font-medium">ASAP (10–15 mins)</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-silver">Total Settled:</span>
+            <span id="receipt-total" class="text-alabaster font-semibold">$0.00</span>
+          </div>
+        </div>
+        <p class="text-xs text-silver leading-relaxed">
+          Your order is queued on our Slayer espresso bar. Collect directly at the <span class="text-alabaster font-medium">Obsidian Pickup Counter</span>.
+        </p>
+        <button id="start-new-order-btn" class="w-full py-3 rounded-full border border-champagne text-champagne text-xs uppercase tracking-widest hover:bg-champagne hover:text-obsidian transition-colors">
+          Start Another Order
+        </button>
+      </div>
+    </div>
+
+    <!-- Drawer Footer -->
+    <div id="cart-footer" class="hidden p-6 border-t border-hairline bg-obsidian space-y-4">
+      <div>
+        <label for="pickup-time-select" class="block text-[11px] uppercase tracking-wider text-silver mb-1.5">Pickup Time</label>
+        <select id="pickup-time-select" class="w-full px-3.5 py-2.5 rounded-xl bg-charcoal border border-hairline text-xs text-alabaster focus:outline-none focus:border-champagne">
+          <option value="ASAP (10–15 mins)">ASAP (10–15 mins)</option>
+          <option value="In 30 minutes">In 30 minutes</option>
+          <option value="In 45 minutes">In 45 minutes</option>
+          <option value="Late Night (10:30 PM)">Late Night (10:30 PM)</option>
+        </select>
+      </div>
+
+      <div class="space-y-1.5 text-xs pt-1">
+        <div class="flex justify-between text-silver">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">$0.00</span>
+        </div>
+        <div class="flex justify-between text-silver">
+          <span>Estimated Tax (8.875%)</span>
+          <span id="cart-tax">$0.00</span>
+        </div>
+        <div class="flex justify-between text-base font-serif text-alabaster pt-2 border-t border-hairline">
+          <span>Total</span>
+          <span id="cart-total" class="text-champagne font-semibold text-xl">$0.00</span>
+        </div>
+      </div>
+
+      <button id="place-order-btn" class="w-full py-4 rounded-full bg-champagne text-obsidian font-semibold text-xs uppercase tracking-[0.2em] hover:bg-alabaster transition-all duration-300 champagne-glow">
+        Place Express Order
+      </button>
+    </div>
+  </aside>
+
+  <!-- APPLICATION LOGIC -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+      // ==========================================
+      // 1. MENU DATA & FILTER ENGINE
+      // ==========================================
+      const MENU_ITEMS = [
+        {
+          id: 'esp-1',
+          name: 'Obsidian Velvet Cortado',
+          category: 'Signature Espresso',
+          price: 5.00,
+          tastingNotes: 'Dark cacao, roasted black sesame, silky microfoam',
+          origin: 'Huila, Colombia • 1:1 Ristretto & Velvety Milk',
+          tags: ['House Signature'],
+        },
+        {
+          id: 'esp-2',
+          name: 'Nocturne Gold Oat Latte',
+          category: 'Signature Espresso',
+          price: 6.50,
+          tastingNotes: 'Madagascar vanilla bean, smoked sea salt, toasted oat',
+          origin: 'Nocturne House Espresso Blend • Barista Oat Silk',
+          tags: ['House Signature', 'Vegan'],
+        },
+        {
+          id: 'esp-3',
+          name: 'Charcoal & Vanilla Flat White',
+          category: 'Signature Espresso',
+          price: 6.25,
+          tastingNotes: 'Activated coconut ash, velvety crema, subtle sweet vanilla',
+          origin: 'Cerrado, Brazil & Ethiopia Sidamo Double Shot',
+          tags: ['Vegan'],
+        },
+        {
+          id: 'po-1',
+          name: 'Panama Boquete Geisha V60',
+          category: 'Pour-Over & Filter',
+          price: 9.50,
+          tastingNotes: 'White peach, jasmine blossom, bergamot, champagne finish',
+          origin: 'Boquete, Panama • Natural Micro-Lot • 1,950 MASL',
+          tags: ['House Signature', 'Vegan'],
+        },
+        {
+          id: 'po-2',
+          name: 'Ethiopia Yirgacheffe Halo',
+          category: 'Pour-Over & Filter',
+          price: 7.25,
+          tastingNotes: 'Candied lemon peel, Earl Grey tea, honeysuckle',
+          origin: 'Gedeb, Ethiopia • Washed Process • Hand-Poured',
+          tags: ['Vegan'],
+        },
+        {
+          id: 'po-3',
+          name: 'Kenya Nyeri AA Kalita Wave',
+          category: 'Pour-Over & Filter',
+          price: 7.50,
+          tastingNotes: 'Blackcurrant, hibiscus, sparkling grapefruit acidity',
+          origin: 'Nyeri, Kenya • SL28 & SL34 Varietals',
+          tags: ['Vegan'],
+        },
+        {
+          id: 'cb-1',
+          name: 'Sparkling Yuzu Espresso Tonic',
+          category: 'Cold Brew & Tonic',
+          price: 6.75,
+          tastingNotes: 'Japanese yuzu citrus, botanical quinine, floral espresso crema',
+          origin: 'Chilled Kenya Double Espresso • Artisanal Dry Tonic',
+          tags: ['House Signature', 'Iced', 'Vegan'],
+        },
+        {
+          id: 'cb-2',
+          name: '16-Hour Kyoto Slow-Drip',
+          category: 'Cold Brew & Tonic',
+          price: 6.25,
+          tastingNotes: 'Dark plum, molasses, cacao nib, crystal-clean finish',
+          origin: 'Glass Tower Extraction • Hand-Carved Ice Sphere',
+          tags: ['Iced', 'Vegan'],
+        },
+        {
+          id: 'cb-3',
+          name: 'Nitro Cascara Cold Brew',
+          category: 'Cold Brew & Tonic',
+          price: 6.50,
+          tastingNotes: 'Dried cherry husk, velvety nitrogen cascading foam',
+          origin: 'Infused with Organic Coffee Cherry Cascara',
+          tags: ['Iced', 'Vegan'],
+        },
+        {
+          id: 'pas-1',
+          name: 'Black Sesame Kouign-Amann',
+          category: 'Artisanal Pastry',
+          price: 5.75,
+          tastingNotes: 'Caramelized flaky crust, roasted black sesame frangipane',
+          origin: '72-Hour Laminated French Cultured Butter Dough',
+          tags: ['House Signature'],
+        },
+        {
+          id: 'pas-2',
+          name: 'Dark Cacao & Sea Salt Croissant',
+          category: 'Artisanal Pastry',
+          price: 5.50,
+          tastingNotes: '70% single-origin dark chocolate batons, Maldon salt flakes',
+          origin: 'Baked fresh at 7:00 AM & 6:00 PM daily',
+          tags: [],
+        },
+        {
+          id: 'pas-3',
+          name: 'Cardamom & Rose Brioche Knot',
+          category: 'Artisanal Pastry',
+          price: 5.25,
+          tastingNotes: 'Freshly cracked green cardamom, Damascus rose glaze',
+          origin: '100% Plant-Based Heritage Wheat Dough',
+          tags: ['Vegan'],
+        }
+      ];
+
+      let activeCategory = 'All';
+      let activeTag = 'All';
+      let searchQuery = '';
+
+      const menuGrid = document.getElementById('menu-grid');
+      const menuEmptyState = document.getElementById('menu-empty-state');
+      const searchInput = document.getElementById('menu-search');
+      const clearSearchBtn = document.getElementById('clear-search-btn');
+
+      function renderMenu() {
+        const filtered = MENU_ITEMS.filter(item => {
+          const matchesCategory = activeCategory === 'All' || item.category === activeCategory;
+          const matchesTag = activeTag === 'All' || item.tags.includes(activeTag);
+          const q = searchQuery.toLowerCase().trim();
+          const matchesSearch = !q || 
+            item.name.toLowerCase().includes(q) || 
+            item.tastingNotes.toLowerCase().includes(q) || 
+            item.origin.toLowerCase().includes(q) ||
+            item.category.toLowerCase().includes(q);
+          return matchesCategory && matchesTag && matchesSearch;
+        });
+
+        menuGrid.innerHTML = '';
+
+        if (filtered.length === 0) {
+          menuGrid.classList.add('hidden');
+          menuEmptyState.classList.remove('hidden');
+          return;
+        }
+
+        menuGrid.classList.remove('hidden');
+        menuEmptyState.classList.add('hidden');
+
+        filtered.forEach(item => {
+          const badgesHtml = item.tags.map(tag => {
+            const isSig = tag === 'House Signature';
+            return `<span class="px-2.5 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-medium ${
+              isSig 
+                ? 'bg-champagne/15 text-champagne border border-champagne/40' 
+                : 'bg-graphite text-silver border border-hairline'
+            }">${isSig ? '★ ' + tag : tag}</span>`;
+          }).join('');
+
+          const card = document.createElement('article');
+          card.className = 'group bg-charcoal border border-hairline hover:border-champagne/60 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-xl';
+          card.innerHTML = `
+            <div>
+              <div class="flex items-start justify-between gap-3 mb-2">
+                <span class="text-[10px] uppercase tracking-[0.22em] text-champagne">${item.category}</span>
+                <span class="font-serif text-2xl text-champagne font-semibold">$${item.price.toFixed(2)}</span>
+              </div>
+              <h3 class="font-serif text-2xl text-alabaster group-hover:text-champagne transition-colors mb-2">${item.name}</h3>
+              <p class="font-serif italic text-base text-alabaster/90 mb-2">"${item.tastingNotes}"</p>
+              <p class="text-xs text-silver leading-relaxed mb-4">${item.origin}</p>
+            </div>
+
+            <div class="pt-4 border-t border-hairline flex items-center justify-between gap-3">
+              <div class="flex flex-wrap gap-1.5">${badgesHtml}</div>
+              <button 
+                data-add-id="${item.id}" 
+                class="add-to-order-btn shrink-0 px-4 py-2 rounded-full bg-graphite hover:bg-champagne text-alabaster hover:text-obsidian border border-hairline hover:border-champagne text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-1.5"
+              >
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                <span>Add</span>
+              </button>
+            </div>
+          `;
+          menuGrid.appendChild(card);
+        });
+
+        lucide.createIcons();
+
+        document.querySelectorAll('.add-to-order-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-add-id');
+            const item = MENU_ITEMS.find(m => m.id === id);
+            if (item) {
+              addToCart({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                customization: 'Standard Nocturne Prep'
+              });
+            }
+          });
+        });
+      }
+
+      document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.category-tab').forEach(t => {
+            t.classList.remove('bg-champagne', 'text-obsidian', 'font-semibold', 'active');
+            t.classList.add('bg-charcoal', 'text-silver', 'border', 'border-hairline');
+          });
+          tab.classList.remove('bg-charcoal', 'text-silver', 'border', 'border-hairline');
+          tab.classList.add('bg-champagne', 'text-obsidian', 'font-semibold', 'active');
+          activeCategory = tab.getAttribute('data-category');
+          renderMenu();
+        });
+      });
+
+      document.querySelectorAll('.tag-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          document.querySelectorAll('.tag-pill').forEach(p => {
+            p.classList.remove('bg-graphite', 'text-champagne', 'border-champagne/50', 'active');
+            p.classList.add('bg-charcoal', 'text-silver', 'border-hairline');
+          });
+          pill.classList.remove('bg-charcoal', 'text-silver', 'border-hairline');
+          pill.classList.add('bg-graphite', 'text-champagne', 'border-champagne/50', 'active');
+          activeTag = pill.getAttribute('data-tag');
+          renderMenu();
+        });
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        clearSearchBtn.classList.toggle('hidden', searchQuery.length === 0);
+        renderMenu();
+      });
+
+      clearSearchBtn.addEventListener('click', () => {
+        searchQuery = '';
+        searchInput.value = '';
+        clearSearchBtn.classList.add('hidden');
+        renderMenu();
+      });
+
+      document.getElementById('reset-filters-btn').addEventListener('click', () => {
+        activeCategory = 'All';
+        activeTag = 'All';
+        searchQuery = '';
+        searchInput.value = '';
+        clearSearchBtn.classList.add('hidden');
+        document.querySelector('.category-tab[data-category="All"]').click();
+        document.querySelector('.tag-pill[data-tag="All"]').click();
+      });
+
+      renderMenu();
+
+      // ==========================================
+      // 2. INTERACTIVE CUSTOM BREW BUILDER ('THE CRAFT LAB')
+      // ==========================================
+      const LAB_DATA = {
+        bases: [
+          { id: 'Double Ristretto', name: 'Double Ristretto', price: 4.75, caffeine: 155, calories: 5, color: '#18181B', isIced: false, tags: ['Syrupy Crema', 'Concentrated'] },
+          { id: 'Cold Brew Concentrate', name: 'Cold Brew Concentrate', price: 5.25, caffeine: 210, calories: 5, color: '#09090B', isIced: true, tags: ['16-Hr Steep', 'Ultra Smooth'] },
+          { id: 'Ceremonial Matcha', name: 'Ceremonial Matcha', price: 5.75, caffeine: 75, calories: 15, color: '#14532D', isIced: false, tags: ['Uji First-Harvest', 'Umami'] },
+          { id: 'Single-Origin Pour-Over', name: 'Single-Origin Pour-Over', price: 6.50, caffeine: 165, calories: 5, color: '#27272A', isIced: false, tags: ['Hand-Poured', 'High Clarity'] }
+        ],
+        milks: [
+          { id: 'Oat Silk', name: 'Oat Silk', price: 0.75, calories: 110, color: '#F4F4F5', tag: 'Velvety Oat' },
+          { id: 'Whole Microfoam', name: 'Whole Microfoam', price: 0.50, calories: 120, color: '#FAFAFA', tag: 'Rich Microfoam' },
+          { id: 'Almond Velvet', name: 'Almond Velvet', price: 0.75, calories: 60, color: '#E4E4E7', tag: 'Light Nutty' },
+          { id: 'Black / Neat', name: 'Black / Neat', price: 0, calories: 0, color: 'transparent', tag: 'Unfiltered Purity' }
+        ],
+        roasts: [
+          { id: 'Light Floral', name: 'Light Floral', desc: 'Jasmine & citrus brightness', tag: 'Floral Acidity' },
+          { id: 'Medium Balanced', name: 'Medium Balanced', desc: 'Silky body & stone fruit', tag: 'Balanced Harmony' },
+          { id: 'Dark Velvet', name: 'Dark Velvet', desc: 'Deep cacao & smoky finish', tag: 'Nocturnal Depth' }
+        ],
+        infusions: [
+          { id: 'Madagascar Vanilla', name: 'Madagascar Vanilla', price: 0.75, calories: 40, color: '#E5C158', tag: 'Bourbon Vanilla' },
+          { id: 'Smoked Sea Salt', name: 'Smoked Sea Salt', price: 0.65, calories: 15, color: '#A1A1AA', tag: 'Saline Crispness' },
+          { id: 'Raw Agave', name: 'Raw Agave', price: 0.60, calories: 35, color: '#D4AF37', tag: 'Clean Nectar' },
+          { id: 'None', name: 'None', price: 0, calories: 0, color: 'transparent', tag: 'Zero Sweetener' }
+        ]
+      };
+
+      let labState = {
+        base: LAB_DATA.bases[0],
+        milk: LAB_DATA.milks[0],
+        roast: LAB_DATA.roasts[2], // Dark Velvet default
+        infusion: LAB_DATA.infusions[0]
+      };
+
+      function renderLabControls() {
+        // Bases
+        document.getElementById('builder-base-options').innerHTML = LAB_DATA.bases.map(b => {
+          const active = labState.base.id === b.id;
+          return `
+            <button type="button" data-base="${b.id}" class="lab-base-btn p-3.5 rounded-xl border text-left transition-all ${
+              active ? 'border-champagne bg-champagne/15 text-alabaster' : 'border-hairline bg-charcoal text-silver hover:border-champagne/40'
+            }">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold ${active ? 'text-champagne' : 'text-alabaster'}">${b.name}</span>
+                <span class="text-xs font-mono ${active ? 'text-champagne' : 'text-silver'}">$${b.price.toFixed(2)}</span>
+              </div>
+              <span class="block text-[10px] opacity-75 mt-1">${b.caffeine}mg caffeine</span>
+            </button>
+          `;
+        }).join('');
+
+        // Milks
+        document.getElementById('builder-milk-options').innerHTML = LAB_DATA.milks.map(m => {
+          const active = labState.milk.id === m.id;
+          return `
+            <button type="button" data-milk="${m.id}" class="lab-milk-btn p-3 rounded-xl border text-center transition-all ${
+              active ? 'border-champagne bg-champagne/15 text-alabaster' : 'border-hairline bg-charcoal text-silver hover:border-champagne/40'
+            }">
+              <span class="block text-xs font-medium ${active ? 'text-champagne' : 'text-alabaster'}">${m.name}</span>
+              <span class="block text-[10px] opacity-75 mt-0.5">${m.price > 0 ? '+$' + m.price.toFixed(2) : 'Included'}</span>
+            </button>
+          `;
+        }).join('');
+
+        // Roasts
+        document.getElementById('builder-roast-options').innerHTML = LAB_DATA.roasts.map(r => {
+          const active = labState.roast.id === r.id;
+          return `
+            <button type="button" data-roast="${r.id}" class="lab-roast-btn p-3 rounded-xl border text-left transition-all ${
+              active ? 'border-champagne bg-champagne/15 text-alabaster' : 'border-hairline bg-charcoal text-silver hover:border-champagne/40'
+            }">
+              <span class="block text-xs font-semibold ${active ? 'text-champagne' : 'text-alabaster'}">${r.name}</span>
+              <span class="block text-[10px] opacity-75 mt-0.5">${r.desc}</span>
+            </button>
+          `;
+        }).join('');
+
+        // Infusions
+        document.getElementById('builder-infusion-options').innerHTML = LAB_DATA.infusions.map(inf => {
+          const active = labState.infusion.id === inf.id;
+          return `
+            <button type="button" data-infusion="${inf.id}" class="lab-infusion-btn p-3 rounded-xl border text-center transition-all ${
+              active ? 'border-champagne bg-champagne/15 text-alabaster' : 'border-hairline bg-charcoal text-silver hover:border-champagne/40'
+            }">
+              <span class="block text-xs font-medium ${active ? 'text-champagne' : 'text-alabaster'}">${inf.name}</span>
+              <span class="block text-[10px] opacity-75 mt-0.5">${inf.price > 0 ? '+$' + inf.price.toFixed(2) : 'Included'}</span>
+            </button>
+          `;
+        }).join('');
+
+        // Bind Listeners
+        document.querySelectorAll('.lab-base-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            labState.base = LAB_DATA.bases.find(x => x.id === btn.dataset.base);
+            renderLabControls();
+            updateLabPreview();
+          });
+        });
+
+        document.querySelectorAll('.lab-milk-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            labState.milk = LAB_DATA.milks.find(x => x.id === btn.dataset.milk);
+            renderLabControls();
+            updateLabPreview();
+          });
+        });
+
+        document.querySelectorAll('.lab-roast-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            labState.roast = LAB_DATA.roasts.find(x => x.id === btn.dataset.roast);
+            renderLabControls();
+            updateLabPreview();
+          });
+        });
+
+        document.querySelectorAll('.lab-infusion-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            labState.infusion = LAB_DATA.infusions.find(x => x.id === btn.dataset.infusion);
+            renderLabControls();
+            updateLabPreview();
+          });
+        });
+      }
+
+      function updateLabPreview() {
+        const { base, milk, roast, infusion } = labState;
+        const totalPrice = base.price + milk.price + infusion.price;
+        const totalCalories = base.calories + milk.calories + infusion.calories;
+
+        const milkLabel = milk.id !== 'Black / Neat' ? `${milk.id} ` : 'Neat ';
+        document.getElementById('preview-drink-title').textContent = `${milkLabel}${base.id}`;
+        document.getElementById('preview-drink-price').textContent = `$${totalPrice.toFixed(2)}`;
+        document.getElementById('preview-caffeine').textContent = `${base.caffeine} mg`;
+        document.getElementById('preview-calories').textContent = `${totalCalories} kcal`;
+        document.getElementById('preview-vessel-caption').textContent = base.isIced
+          ? '12oz Crystal Highball • Hand-Carved Ice'
+          : '8oz Smoked Borosilicate Glass';
+
+        // Update Flavor Profile Tags
+        const profileTags = [...base.tags, roast.tag, milk.tag, infusion.tag];
+        document.getElementById('preview-flavor-tags').innerHTML = profileTags.map(tag => `
+          <span class="px-2.5 py-1 rounded-full bg-obsidian border border-hairline text-[11px] text-alabaster">
+            ${tag}
+          </span>
+        `).join('');
+
+        // Update Cup Layer Visualization (Pure Monochrome / Champagne / Emerald)
+        const milkLayer = document.getElementById('cup-layer-milk');
+        const infusionLayer = document.getElementById('cup-layer-infusion');
+        const baseLayer = document.getElementById('cup-layer-base');
+        const ambientEffect = document.getElementById('cup-ambient-effect');
+
+        milkLayer.style.height = milk.id === 'Black / Neat' ? '0%' : '44%';
+        milkLayer.style.backgroundColor = milk.color;
+
+        infusionLayer.style.height = infusion.id === 'None' ? '0%' : '12%';
+        infusionLayer.style.backgroundColor = infusion.color;
+
+        baseLayer.style.height = milk.id === 'Black / Neat' ? '85%' : '44%';
+        baseLayer.style.backgroundColor = base.color;
+
+        if (base.isIced) {
+          ambientEffect.classList.remove('animate-steam');
+          ambientEffect.innerHTML = `
+            <span class="w-3 h-3 rounded-sm border border-zinc-400/50 bg-white/10 rotate-12"></span>
+            <span class="w-3 h-3 rounded-sm border border-champagne/50 bg-champagne/10 -rotate-12"></span>
+          `;
+        } else {
+          ambientEffect.classList.add('animate-steam');
+          ambientEffect.innerHTML = `
+            <span class="w-1 h-5 rounded-full bg-alabaster/25"></span>
+            <span class="w-1 h-7 rounded-full bg-champagne/50"></span>
+            <span class="w-1 h-5 rounded-full bg-alabaster/25"></span>
+          `;
+        }
+      }
+
+      document.getElementById('add-custom-brew-btn').addEventListener('click', () => {
+        const { base, milk, roast, infusion } = labState;
+        const totalPrice = base.price + milk.price + infusion.price;
+        const customName = `Craft Lab: ${base.name}`;
+        const customDesc = `${milk.name} • ${roast.name} • ${infusion.name}`;
+
+        addToCart({
+          id: `lab-${Date.now()}`,
+          name: customName,
+          price: totalPrice,
+          customization: customDesc
+        });
+      });
+
+      renderLabControls();
+      updateLabPreview();
+
+      // ==========================================
+      // 3. SLIDE-OUT EXPRESS ORDER CART DRAWER
+      // ==========================================
+      let cart = [];
+
+      const cartDrawer = document.getElementById('cart-drawer');
+      const cartBackdrop = document.getElementById('cart-backdrop');
+      const headerCartBadge = document.getElementById('header-cart-badge');
+      const cartItemsList = document.getElementById('cart-items-list');
+      const cartEmptyView = document.getElementById('cart-empty-view');
+      const cartFooter = document.getElementById('cart-footer');
+      const orderReceiptView = document.getElementById('order-receipt-view');
+
+      function openCart() {
+        cartBackdrop.classList.remove('hidden');
+        setTimeout(() => cartBackdrop.classList.remove('opacity-0'), 10);
+        cartDrawer.classList.remove('translate-x-full');
+      }
+
+      function closeCart() {
+        cartDrawer.classList.add('translate-x-full');
+        cartBackdrop.classList.add('opacity-0');
+        setTimeout(() => cartBackdrop.classList.add('hidden'), 300);
+      }
+
+      document.getElementById('open-cart-btn').addEventListener('click', openCart);
+      document.getElementById('close-cart-btn').addEventListener('click', closeCart);
+      cartBackdrop.addEventListener('click', closeCart);
+      document.getElementById('browse-menu-from-cart').addEventListener('click', () => {
+        closeCart();
+        document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      function addToCart(newItem) {
+        orderReceiptView.classList.add('hidden');
+        const existing = cart.find(item => item.name === newItem.name && item.customization === newItem.customization);
+        if (existing) {
+          existing.qty += 1;
+        } else {
+          cart.push({ ...newItem, qty: 1, note: '' });
+        }
+        renderCart();
+        showToast(`Added "${newItem.name}" to your order`);
+      }
+
+      function renderCart() {
+        const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+        headerCartBadge.textContent = totalQty;
+        headerCartBadge.classList.add('scale-125');
+        setTimeout(() => headerCartBadge.classList.remove('scale-125'), 200);
+
+        if (cart.length === 0) {
+          cartEmptyView.classList.remove('hidden');
+          cartItemsList.classList.add('hidden');
+          cartFooter.classList.add('hidden');
+          return;
+        }
+
+        cartEmptyView.classList.add('hidden');
+        cartItemsList.classList.remove('hidden');
+        cartFooter.classList.remove('hidden');
+
+        cartItemsList.innerHTML = cart.map((item, idx) => `
+          <div class="bg-obsidian border border-hairline rounded-2xl p-4 space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <h4 class="font-serif text-lg text-alabaster leading-tight">${item.name}</h4>
+                <span class="text-[11px] text-silver block mt-0.5">${item.customization}</span>
+              </div>
+              <span class="font-serif text-lg text-champagne font-semibold">$${(item.price * item.qty).toFixed(2)}</span>
+            </div>
+
+            <input 
+              type="text" 
+              data-note-idx="${idx}" 
+              value="${item.note}" 
+              placeholder="Custom prep note (extra hot, light ice, etc.)..." 
+              class="cart-note-input w-full px-3 py-1.5 rounded-lg bg-charcoal border border-hairline text-xs text-alabaster placeholder:text-silver/40 focus:outline-none focus:border-champagne"
+            />
+
+            <div class="flex items-center justify-between pt-1">
+              <div class="flex items-center gap-2 bg-charcoal rounded-lg p-1 border border-hairline">
+                <button data-qty-minus="${idx}" class="w-6 h-6 rounded flex items-center justify-center text-silver hover:text-alabaster hover:bg-graphite">
+                  <i data-lucide="minus" class="w-3 h-3"></i>
+                </button>
+                <span class="text-xs font-semibold text-alabaster w-5 text-center">${item.qty}</span>
+                <button data-qty-plus="${idx}" class="w-6 h-6 rounded flex items-center justify-center text-silver hover:text-alabaster hover:bg-graphite">
+                  <i data-lucide="plus" class="w-3 h-3"></i>
+                </button>
+              </div>
+
+              <button data-remove-idx="${idx}" class="text-[11px] text-silver/60 hover:text-rose-400 transition-colors">
+                Remove
+              </button>
+            </div>
+          </div>
+        `).join('');
+
+        lucide.createIcons();
+
+        document.querySelectorAll('[data-qty-plus]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const i = parseInt(btn.dataset.qtyPlus, 10);
+            cart[i].qty += 1;
+            renderCart();
+          });
+        });
+
+        document.querySelectorAll('[data-qty-minus]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const i = parseInt(btn.dataset.qtyMinus, 10);
+            if (cart[i].qty > 1) {
+              cart[i].qty -= 1;
+            } else {
+              cart.splice(i, 1);
+            }
+            renderCart();
+          });
+        });
+
+        document.querySelectorAll('[data-remove-idx]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const i = parseInt(btn.dataset.removeIdx, 10);
+            cart.splice(i, 1);
+            renderCart();
+          });
+        });
+
+        document.querySelectorAll('.cart-note-input').forEach(input => {
+          input.addEventListener('input', (e) => {
+            const i = parseInt(e.target.dataset.noteIdx, 10);
+            cart[i].note = e.target.value;
+          });
+        });
+
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const tax = subtotal * 0.08875;
+        const total = subtotal + tax;
+
+        document.getElementById('cart-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+        document.getElementById('cart-tax').textContent = `$${tax.toFixed(2)}`;
+        document.getElementById('cart-total').textContent = `$${total.toFixed(2)}`;
+      }
+
+      document.getElementById('place-order-btn').addEventListener('click', () => {
+        if (cart.length === 0) return;
+
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const total = subtotal * 1.08875;
+        const pickupTime = document.getElementById('pickup-time-select').value;
+        const orderCode = `#NR-${Math.floor(100 + Math.random() * 900)}`;
+
+        document.getElementById('receipt-order-num').textContent = orderCode;
+        document.getElementById('receipt-pickup-time').textContent = pickupTime;
+        document.getElementById('receipt-total').textContent = `$${total.toFixed(2)}`;
+
+        cart = [];
+        headerCartBadge.textContent = '0';
+        cartItemsList.classList.add('hidden');
+        cartFooter.classList.add('hidden');
+        cartEmptyView.classList.add('hidden');
+        orderReceiptView.classList.remove('hidden');
+      });
+
+      document.getElementById('start-new-order-btn').addEventListener('click', () => {
+        orderReceiptView.classList.add('hidden');
+        renderCart();
+      });
+
+      // ==========================================
+      // 4. INTERACTIVE TABLE RESERVATION SYSTEM
+      // ==========================================
+      const resDateInput = document.getElementById('res-date');
+      const todayIso = new Date().toISOString().split('T')[0];
+      resDateInput.value = todayIso;
+      resDateInput.min = todayIso;
+
+      let partySize = 2;
+      let selectedZone = 'Main Obsidian Lounge';
+      let selectedTimeSlot = '07:30 PM';
+
+      const TIME_SLOTS = [
+        { time: '09:00 AM', status: 'Available' },
+        { time: '11:30 AM', status: 'Available' },
+        { time: '02:00 PM', status: 'Limited' },
+        { time: '04:30 PM', status: 'Full' },
+        { time: '06:00 PM', status: 'Available' },
+        { time: '07:30 PM', status: 'Available' },
+        { time: '09:30 PM', status: 'Limited' },
+        { time: '11:00 PM', status: 'Available' },
+      ];
+
+      function renderTimeSlots() {
+        const grid = document.getElementById('time-slots-grid');
+        grid.innerHTML = TIME_SLOTS.map(slot => {
+          const isFull = slot.status === 'Full';
+          const isSelected = selectedTimeSlot === slot.time && !isFull;
+          const dotColor = slot.status === 'Available' ? 'bg-emerald-400' : slot.status === 'Limited' ? 'bg-champagne' : 'bg-zinc-500';
+
+          return `
+            <button 
+              type="button" 
+              data-slot="${slot.time}" 
+              ${isFull ? 'disabled' : ''}
+              class="time-slot-btn p-2.5 rounded-xl border text-center transition-all ${
+                isFull 
+                  ? 'border-hairline/50 bg-obsidian/40 text-zinc-600 cursor-not-allowed line-through' 
+                  : isSelected 
+                    ? 'border-champagne bg-champagne/15 text-champagne font-semibold' 
+                    : 'border-hairline bg-obsidian text-alabaster hover:border-champagne/50'
+              }"
+            >
+              <span class="block text-xs">${slot.time}</span>
+              <span class="inline-flex items-center gap-1 text-[10px] opacity-80 mt-0.5">
+                <span class="w-1.5 h-1.5 rounded-full ${dotColor}"></span>
+                ${slot.status}
+              </span>
+            </button>
+          `;
+        }).join('');
+
+        document.querySelectorAll('.time-slot-btn:not([disabled])').forEach(btn => {
+          btn.addEventListener('click', () => {
+            selectedTimeSlot = btn.dataset.slot;
+            renderTimeSlots();
+          });
+        });
+      }
+
+      renderTimeSlots();
+
+      const partyDisplay = document.getElementById('party-size-display');
+      document.getElementById('party-minus').addEventListener('click', () => {
+        if (partySize > 1) {
+          partySize--;
+          partyDisplay.textContent = `${partySize} ${partySize === 1 ? 'Guest' : 'Guests'}`;
+        }
+      });
+
+      document.getElementById('party-plus').addEventListener('click', () => {
+        if (partySize < 8) {
+          partySize++;
+          partyDisplay.textContent = `${partySize} Guests`;
+        }
+      });
+
+      document.querySelectorAll('.zone-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.zone-btn').forEach(b => {
+            b.classList.remove('border-champagne', 'bg-champagne/10', 'active');
+            b.classList.add('border-hairline', 'bg-obsidian');
+            b.querySelector('span:first-child').classList.remove('text-champagne');
+            b.querySelector('span:first-child').classList.add('text-alabaster');
+          });
+          btn.classList.remove('border-hairline', 'bg-obsidian');
+          btn.classList.add('border-champagne', 'bg-champagne/10', 'active');
+          btn.querySelector('span:first-child').classList.remove('text-alabaster');
+          btn.querySelector('span:first-child').classList.add('text-champagne');
+          selectedZone = btn.dataset.zone;
+        });
+      });
+
+      const resForm = document.getElementById('reservation-form');
+      const resFormCard = document.getElementById('reservation-form-card');
+      const resConfCard = document.getElementById('reservation-confirmation-card');
+
+      resForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const guestName = document.getElementById('res-name').value.trim();
+        const dateVal = resDateInput.value;
+        const formattedDate = new Date(dateVal + 'T00:00:00').toLocaleDateString('en-US', {
+          weekday: 'short', month: 'short', day: 'numeric'
+        });
+        const code = `NR-${Math.floor(1000 + Math.random() * 9000)}`;
+
+        document.getElementById('conf-guest-greeting').textContent = `Thank you, ${guestName}. Your nocturnal seat is confirmed.`;
+        document.getElementById('conf-code').textContent = code;
+        document.getElementById('conf-datetime').textContent = `${formattedDate} at ${selectedTimeSlot}`;
+        document.getElementById('conf-zone-party').textContent = `${partySize} ${partySize === 1 ? 'Guest' : 'Guests'} • ${selectedZone}`;
+
+        resFormCard.classList.add('hidden');
+        resConfCard.classList.remove('hidden');
+        showToast(`Table reserved (${code})`);
+      });
+
+      document.getElementById('new-reservation-btn').addEventListener('click', () => {
+        resConfCard.classList.add('hidden');
+        resFormCard.classList.remove('hidden');
+      });
+
+      // ==========================================
+      // 5. LIVE STATUS & WEEKLY SCHEDULE
+      // ==========================================
+      const WEEKLY_SCHEDULE = [
+        { dayIndex: 1, name: 'Monday', hours: '07:30 AM – 11:00 PM', open: 7.5, close: 23 },
+        { dayIndex: 2, name: 'Tuesday', hours: '07:30 AM – 11:00 PM', open: 7.5, close: 23 },
+        { dayIndex: 3, name: 'Wednesday', hours: '07:30 AM – 12:00 AM', open: 7.5, close: 24 },
+        { dayIndex: 4, name: 'Thursday', hours: '07:30 AM – 01:00 AM', open: 7.5, close: 25 },
+        { dayIndex: 5, name: 'Friday', hours: '07:30 AM – 01:00 AM', open: 7.5, close: 25 },
+        { dayIndex: 6, name: 'Saturday', hours: '08:30 AM – 01:00 AM', open: 8.5, close: 25 },
+        { dayIndex: 0, name: 'Sunday', hours: '08:30 AM – 11:00 PM', open: 8.5, close: 23 }
+      ];
+
+      function initScheduleAndStatus() {
+        const now = new Date();
+        const currentDay = now.getDay();
+        const currentHourDecimal = now.getHours() + (now.getMinutes() / 60);
+
+        // Render Weekly Schedule List with Today Highlighted
+        const listEl = document.getElementById('weekly-schedule-list');
+        listEl.innerHTML = WEEKLY_SCHEDULE.map(item => {
+          const isToday = item.dayIndex === currentDay;
+          return `
+            <li class="flex items-center justify-between px-4 py-2.5 rounded-xl transition-colors ${
+              isToday 
+                ? 'bg-charcoal border border-champagne/50 text-alabaster font-medium' 
+                : 'text-silver border border-transparent'
+            }">
+              <span class="flex items-center gap-2">
+                ${isToday ? '<span class="w-1.5 h-1.5 rounded-full bg-champagne"></span>' : ''}
+                ${item.name}
+                ${isToday ? '<span class="text-[10px] uppercase tracking-widest text-champagne ml-1">(Today)</span>' : ''}
+              </span>
+              <span class="${isToday ? 'text-champagne font-mono text-xs' : 'font-mono text-xs'}">${item.hours}</span>
+            </li>
+          `;
+        }).join('');
+
+        // Compute Live Open / Closing Soon Status
+        const todaySched = WEEKLY_SCHEDULE.find(s => s.dayIndex === currentDay);
+        // Handle post-midnight hours (00:00 - 01:00) from previous night
+        const adjustedHour = currentHourDecimal < 3 ? currentHourDecimal + 24 : currentHourDecimal;
+
+        const navPill = document.getElementById('nav-status-pill');
+        const navDot = document.getElementById('nav-status-dot');
+        const navText = document.getElementById('nav-status-text');
+        const mobileText = document.getElementById('mobile-status-text');
+        const schedBadge = document.getElementById('schedule-badge');
+
+        let statusLabel = 'CLOSED';
+        let isClosingSoon = false;
+        let isOpen = false;
+
+        if (adjustedHour >= todaySched.open && adjustedHour < todaySched.close) {
+          isOpen = true;
+          if (todaySched.close - adjustedHour <= 1) {
+            isClosingSoon = true;
+            statusLabel = 'CLOSING SOON';
+          } else {
+            statusLabel = 'OPEN NOW';
+          }
+        }
+
+        if (isOpen && !isClosingSoon) {
+          navPill.className = 'hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-charcoal border border-emerald-500/40 text-[11px] tracking-wider uppercase font-medium text-emerald-400';
+          navDot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+          schedBadge.className = 'px-3.5 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-[11px] uppercase tracking-wider font-semibold';
+          mobileText.className = 'text-xs font-semibold text-emerald-400 uppercase tracking-wider';
+        } else if (isClosingSoon) {
+          navPill.className = 'hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-charcoal border border-champagne/50 text-[11px] tracking-wider uppercase font-medium text-champagne';
+          navDot.className = 'w-2 h-2 rounded-full bg-champagne animate-pulse';
+          schedBadge.className = 'px-3.5 py-1.5 rounded-full bg-champagne/15 border border-champagne/50 text-champagne text-[11px] uppercase tracking-wider font-semibold';
+          mobileText.className = 'text-xs font-semibold text-champagne uppercase tracking-wider';
+        } else {
+          navPill.className = 'hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-charcoal border border-hairline text-[11px] tracking-wider uppercase font-medium text-silver';
+          navDot.className = 'w-2 h-2 rounded-full bg-silver';
+          schedBadge.className = 'px-3.5 py-1.5 rounded-full bg-charcoal border border-hairline text-silver text-[11px] uppercase tracking-wider font-semibold';
+          mobileText.className = 'text-xs font-semibold text-silver uppercase tracking-wider';
+        }
+
+        navText.textContent = statusLabel;
+        mobileText.textContent = statusLabel;
+        schedBadge.textContent = statusLabel;
+      }
+
+      initScheduleAndStatus();
+
+      // Copy Address Utility (iFrame-safe)
+      document.getElementById('copy-address-btn').addEventListener('click', () => {
+        const tempInput = document.createElement('input');
+        tempInput.value = '718 Crosby Street, Ground Floor, SoHo Design Quarter, NY 10012';
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        showToast('Address copied to clipboard');
+      });
+
+      // VIP Newsletter Form
+      document.getElementById('vip-newsletter-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const emailInput = document.getElementById('vip-email-input');
+        if (emailInput.value.trim()) {
+          emailInput.value = '';
+          document.getElementById('vip-feedback').classList.remove('hidden');
+          showToast('Added to the Nocturne Tasting List');
+        }
+      });
+
+      // Mobile Menu Toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileNav = document.getElementById('mobile-nav');
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileNav.classList.toggle('hidden');
+      });
+      document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => mobileNav.classList.add('hidden'));
+      });
+
+      // Toast Notification Helper
+      function showToast(message) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'pointer-events-auto bg-charcoal/95 border border-champagne/60 text-alabaster px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs font-medium animate-fade-in';
+        toast.innerHTML = `
+          <span class="w-2 h-2 rounded-full bg-champagne"></span>
+          <span>${message}</span>
+        `;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => toast.remove(), 300);
+        }, 2800);
+      }
+    });
+  </script>
+</body>
+</html>
